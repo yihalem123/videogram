@@ -6,6 +6,7 @@ from django.http import HttpResponseForbidden, Http404, StreamingHttpResponse
 from .forms import LoginForm, SignUpForm, VideoUploadForm, CommentForm
 from .models import User, Video, Comment, WithdrawRequest, VideoLike, VideoView
 from django.conf import settings
+from utils import generate_btc_address_for_user, check_payments
 import os
 
 def index(request):
@@ -177,14 +178,21 @@ def profile_view(request):
 
 @login_required
 def premium_view(request):
+    """View to handle premium user subscription."""
     if request.user.is_banned:
         return render(request, 'banned.html')
+
     if request.user.btc_address is None:
-        # Burada xpub den adres üretebilirsiniz
-        request.user.btc_address = "mock_btc_address"
-        request.user.save()
+        try:
+            # Generate a unique Bitcoin address for the user
+            request.user.btc_address = generate_btc_address_for_user(request.user.id)
+            request.user.save()
+        except Exception as e:
+            return render(request, 'error.html', {"message": f"Error generating address: {str(e)}"})
+
     is_premium = request.user.is_premium
-    price = 50
+    price = 50  # Replace with your price logic
+
     return render(request, 'premium.html', {
         'is_premium': is_premium,
         'address': request.user.btc_address,

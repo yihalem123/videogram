@@ -5,6 +5,7 @@ from uuid import uuid4
 import os
 
 class User(AbstractUser):
+    user_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
     is_premium = models.BooleanField(default=False)
     btc_address = models.CharField(max_length=255, blank=True, null=True)
     earnings = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
