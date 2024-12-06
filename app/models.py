@@ -10,6 +10,10 @@ class User(AbstractUser):
     btc_address = models.CharField(max_length=255, blank=True, null=True)
     earnings = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     is_banned = models.BooleanField(default=False)
+    def save(self, *args, **kwargs):
+        if not self.user_id:
+            self.user_id = str(uuid4())  # Generate a unique user_id
+        super().save(*args, **kwargs)
 
 def video_upload_path(instance, filename):
     ext = filename.split('.')[-1]

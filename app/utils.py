@@ -10,7 +10,7 @@ def generate_btc_address_for_user(user_id):
         master_key = BIP32Key.fromExtendedKey(xpub)
 
         # Ensure user_id is an integer and derive the address
-        index = int(user_id)  # Convert user_id to an integer
+        index = int(user_id) if user_id.isdigit() else int.from_bytes(user_id.encode(), 'big') % (2**31)
         child_key = master_key.ChildKey(0).ChildKey(index)
         return child_key.Address()
     except ValueError:
