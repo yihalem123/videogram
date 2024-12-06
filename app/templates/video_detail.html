@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ video.title }} - MyTube{% endblock title %}
+{% block content %}
+<h2>{{ video.title }}</h2>
+<p>Category: <a href="{% url 'categories' video.category %}">{{ video.category }}</a></p>
+
+<!-- Video oynatıcı -->
+<div class="video-container" style="position:relative;">
+    <video id="videoplayer" src="{% url 'video_stream' video.id %}" controls width="600"></video>
+    {% if show_overlay %}
+    <div class="premium-overlay" style="position:absolute;top:0;left:0;width:600px;height:100%;background:rgba(0,0,0,0.7);color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;">
+        <p>This content is for premium users only.</p>
+        <a href="{% url 'premium' %}" class="btn" style="background:#444;padding:5px 10px;color:#fff;text-decoration:none;">Get Premium</a>
+    </div>
+    {% endif %}
+</div>
+
+<p>Views: {{ video.views_count }} | Likes: {{ video.likes_count }} <a href="{% url 'like_video' video.id %}">Like</a></p>
+<p>{{ video.description }}</p>
+
+<h3>Comments</h3>
+{% for c in comments %}
+<div class="comment">
+    <p><strong>{{ c.user.username }}:</strong> {{ c.text }}</p>
+</div>
+{% empty %}
+<p>No comments yet.</p>
+{% endfor %}
+<form method="post">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit" name="comment_submit">Add Comment</button>
+</form>
+
+<h3>Recommended Videos</h3>
+{% for rv in recommended %}
+<div>
+    <a href="{% url 'video_detail' rv.id %}">{{ rv.title }}</a>
+</div>
+{% endfor %}
+{% endblock %}

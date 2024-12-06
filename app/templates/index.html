@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Home - MyTube{% endblock title %}
+{% block content %}
+<h2>All Videos</h2>
+<div class="video-grid">
+{% for video in videos %}
+    <div class="video-card">
+        <div class="video-thumb">
+            <!-- You might want to add a thumbnail image field in the future -->
+            <div class="placeholder-thumb">{{ video.title|slice:":1" }}</div>
+        </div>
+        <div class="video-info">
+            <h3><a href="{% url 'video_detail' video.id %}">{{ video.title }}</a></h3>
+            <p class="video-meta">
+                Views: {{ video.views_count }} | Likes: {{ video.likes_count }}
+            </p>
+            {% if video.video_type == 'free' %}
+                <span class="tag free-tag">Free</span>
+            {% else %}
+                {% if user.is_premium %}
+                    <span class="tag premium-tag">Premium - Full</span>
+                {% else %}
+                    <span class="tag premium-tag">Premium (10s Preview)</span>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% empty %}
+    <p>No videos found.</p>
+{% endfor %}
+</div>
+{% endblock %}

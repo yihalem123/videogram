@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Upload Video - MyTube{% endblock title %}
+{% block content %}
+<div class="upload-page">
+    <h2>Upload Video</h2>
+    {% if is_premium %}
+        {% if error %}
+            <div class="error-msg">
+                {% for field, errs in error.items %}
+                    {% for e in errs %}
+                        <p>{{ e }}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data" class="auth-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Upload</button>
+        </form>
+    {% else %}
+        <p>You need to be premium to upload videos. Premium users can earn money from their videos!</p>
+    {% endif %}
+</div>
+{% endblock %}

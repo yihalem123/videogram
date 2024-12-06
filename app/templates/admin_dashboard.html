@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard - MyTube{% endblock title %}
+{% block content %}
+<div class="admin-page">
+    <h2>Admin Dashboard</h2>
+
+    <form method="post" action="{% url 'admin_action' %}" class="admin-actions">
+        {% csrf_token %}
+        <button type="submit" name="action" value="check_payments" class="btn small-btn">Check Payments</button>
+    </form>
+
+    <h3>Users</h3>
+    <table class="data-table">
+        <tr>
+            <th>Username</th><th>Premium</th><th>Banned</th><th>Actions</th>
+        </tr>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.username }}</td>
+            <td>{{ u.is_premium }}</td>
+            <td>{{ u.is_banned }}</td>
+            <td>
+                <form method="post" action="{% url 'admin_action' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ u.id }}">
+                    {% if u.is_banned %}
+                        <button type="submit" name="action" value="unban_user" class="btn small-btn">Unban</button>
+                    {% else %}
+                        <button type="submit" name="action" value="ban_user" class="btn small-btn">Ban</button>
+                    {% endif %}
+                    {% if not u.is_premium %}
+                        <button type="submit" name="action" value="make_premium" class="btn small-btn">Make Premium</button>
+                    {% endif %}
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Videos</h3>
+    <table class="data-table">
+        <tr>
+            <th>Title</th><th>Owner</th><th>Type</th><th>Views</th><th>Actions</th>
+        </tr>
+        {% for v in videos %}
+        <tr>
+            <td>{{ v.title }}</td>
+            <td>{{ v.owner.username }}</td>
+            <td>{{ v.video_type }}</td>
+            <td>{{ v.views_count }}</td>
+            <td>
+                <form method="post" action="{% url 'admin_action' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="video_id" value="{{ v.id }}">
+                    <button type="submit" name="action" value="delete_video" class="btn small-btn">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Withdraw Requests</h3>
+    <table class="data-table">
+        <tr><th>User</th><th>Amount</th><th>BTC Address</th><th>Paid</th><th>TXID</th><th>Action</th></tr>
+        {% for w in withdraws %}
+        <tr>
+            <td>{{ w.user.username }}</td>
+            <td>${{ w.amount }}</td>
+            <td>{{ w.btc_address }}</td>
+            <td>{{ w.is_paid }}</td>
+            <td>{{ w.txid }}</td>
+            <td>
+                {% if not w.is_paid %}
+                <form method="post" action="{% url 'admin_action' %}" class="inline-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="withdraw_id" value="{{ w.id }}">
+                    <input type="text" name="txid" placeholder="TXID" required class="small-input">
+                    <button type="submit" name="action" value="pay_withdraw" class="btn small-btn">Mark Paid</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

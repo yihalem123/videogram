@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Premium - MyTube{% endblock title %}
+{% block content %}
+<div class="premium-page">
+    <h2>Premium Membership</h2>
+    {% if is_premium %}
+        <p class="notice">You are already a Premium user! Enjoy full access.</p>
+    {% else %}
+        <p>To become premium, please send ${{ price }} (≥0.0005 BTC) to this address:</p>
+        <p class="address">{{ address }}</p>
+        <p>After payment is confirmed, you will become premium.</p>
+        <h3>Benefits of Premium:</h3>
+        <ul class="benefits-list">
+            <li>Access all videos in full length</li>
+            <li>Upload your own videos</li>
+            <li>Earn money from video views</li>
+            <li>Enjoy a faster, ad-free experience</li>
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

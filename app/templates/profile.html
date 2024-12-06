@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Profile - MyTube{% endblock title %}
+{% block content %}
+<div class="profile-page">
+    <h2>Your Profile</h2>
+    <p>Username: {{ user.username }}</p>
+    <p>Status: {% if user.is_premium %}Premium{% else %}Normal{% endif %}</p>
+    <h3>Your Videos</h3>
+    <div class="video-list">
+    {% for video in videos %}
+        <div class="video-item profile-video-item">
+            <h4><a href="{% url 'video_detail' video.id %}">{{ video.title }}</a></h4>
+            <p>Views: {{ video.views_count }} | Likes: {{ video.likes_count }}</p>
+        </div>
+    {% empty %}
+        <p>You have not uploaded any videos yet.</p>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

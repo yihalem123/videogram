@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Category: {{ category_name }} - MyTube{% endblock title %}
+{% block content %}
+<h2>Category: {{ category_name }}</h2>
+<div class="video-grid">
+{% for video in videos %}
+    <div class="video-card">
+        <div class="video-thumb">
+            <div class="placeholder-thumb">{{ video.title|slice:":1" }}</div>
+        </div>
+        <div class="video-info">
+            <h3><a href="{% url 'video_detail' video.id %}">{{ video.title }}</a></h3>
+            <p class="video-meta">Views: {{ video.views_count }} | Likes: {{ video.likes_count }}</p>
+        </div>
+    </div>
+{% empty %}
+    <p>No videos found in this category.</p>
+{% endfor %}
+</div>
+{% endblock %}
