@@ -5,15 +5,11 @@ from uuid import uuid4
 import os
 
 class User(AbstractUser):
-    user_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    #user_id = models.UUIDField(default=uuid4, editable=False, unique=True)
     is_premium = models.BooleanField(default=False)
     btc_address = models.CharField(max_length=255, blank=True, null=True)
     earnings = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     is_banned = models.BooleanField(default=False)
-    def save(self, *args, **kwargs):
-        if not self.user_id:
-            self.user_id = str(uuid4())  # Generate a unique user_id
-        super().save(*args, **kwargs)
 
 def video_upload_path(instance, filename):
     ext = filename.split('.')[-1]

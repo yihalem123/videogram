@@ -6,7 +6,7 @@ from django.http import HttpResponseForbidden, Http404, StreamingHttpResponse
 from .forms import LoginForm, SignUpForm, VideoUploadForm, CommentForm
 from .models import User, Video, Comment, WithdrawRequest, VideoLike, VideoView
 from django.conf import settings
-from utils import generate_btc_address_for_user, check_payments
+from .utils import generate_btc_address_for_user, check_payments
 import os
 
 def index(request):
