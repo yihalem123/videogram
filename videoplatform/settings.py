@@ -76,4 +76,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 BITCOIN_RPC_URL = "http://127.0.0.1:8332"
 BITCOIN_RPC_USER = "xx"
 BITCOIN_RPC_PASS = "admin1323S"
-XPUB = "xpub6CB4ADc66NnFuPfo7KmDo4nUmPQ9EMNZEDX6jFzgs6roRza1ftA6sx6U12MiD5fgeTVRpWRcSQBRmsHCyipbNjJLkU43fEQSpP7nB12uRKd"  # Replace with your actual xpub
+ZPUB = "xpub6CB4ADc66NnFuPfo7KmDo4nUmPQ9EMNZEDX6jFzgs6roRza1ftA6sx6U12MiD5fgeTVRpWRcSQBRmsHCyipbNjJLkU43fEQSpP7nB12uRKd"  # Replace with your actual xpub
